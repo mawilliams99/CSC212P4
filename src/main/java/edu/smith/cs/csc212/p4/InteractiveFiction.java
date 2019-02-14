@@ -57,12 +57,13 @@ public class InteractiveFiction {
 			// Get the word they typed as lowercase, and no spaces.
 			String action = words.get(0).toLowerCase().trim();
 			
-			if (action.equals("quit")) {
+			if (action.equals("quit") || action.equals("q") || action.equals("escape") ) {
 				if (input.confirm("Are you sure you want to quit?")) {
 					break;
 				} else {
 					continue;
 				}
+			
 			}
 			
 			// From here on out, what they typed better be a number!
