@@ -18,7 +18,7 @@ public class InteractiveFiction {
 		TextInput input = TextInput.fromArgs(args);
 
 		// This is the game we're playing.
-		GameWorld game = new SpookyMansion();
+		GameWorld game = new DogSearch();
 		
 		// This is the current location of the player (initialize as start).
 		// Maybe we'll expand this to a Player object.
