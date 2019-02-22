@@ -15,9 +15,10 @@ public class DogSearch implements GameWorld {
 	}
 
 	/**
-	 * This constructor builds our SpookyMansion game.
+	 * This constructor builds our Dog search game.
 	 */
 	public DogSearch() {
+	///this creates the main entry hall of the hotel and adds exits to it 
 		Place entranceHall = insert(
 				Place.create("entranceHall", "Oh no your dog got off his leash and ran into an abandoned hotel!\n"
 						+ "You have to find him! Search through the hotel!"));
@@ -25,20 +26,26 @@ public class DogSearch implements GameWorld {
 		entranceHall.addExit(new Exit("stairway0", "There are stairs leading up."));
 		entranceHall.addExit(new Exit("office", "There is a door that says 'staff only' on it."));
 		entranceHall.addExit(new Exit("elevator", "There is an elevator and it looks like it still works!"));
-		
+		///this creates the basement of the hotel and adds exits to it 		
 		Place basement = insert(
 				Place.create("basement", "You have found the basement of the hotel.\n" + 
 		                           "It is darker down here.\n" +
-						"There's puddles on the floor and it's very quiet. It doesn't seem like your dog is here"
+						"There's puddles on the floor and it's very quiet. It doesn't seem like your dog is here."
+						+ " But there is an old bagel you could 'take' it as a snack"
 						));
+		basement.addItem("old bagel");
 		basement.addExit(new Exit("entranceHall", "There are stairs leading up."));
-		
+		///this creates the office of the hotel and adds exits to it 		
 		Place office = insert(
 				Place.create("office", "You're inside the staff office. There are security cameras displayed"
-						+ " on the wall. You check and can see your dog got in the elevator!!"             
+						+ " on the wall. You check and can see your dog got in the elevator!!"
+						+ "There is also a staff key in this room I would suggest you 'take' it "
+						+ " just in case!"             
 						));
+		office.addItem("Staff Key");
 		office.addExit(new Exit("entranceHall", "Go back to the lobby."));
 		
+		///this allows it so you can go up multiple flights of stairs before getting to the roof
 		int stairHeight = 4;
 		int laststairPart = stairHeight - 1;
 		for (int i=0; i<stairHeight; i++) {
@@ -54,11 +61,13 @@ public class DogSearch implements GameWorld {
 				stairsUp.addExit(new Exit("roof", "There's a door at the top of the stairs"));
 			}
 		}
+		///there is no way back off the roof so the game will end here because the player gets stuck
 		Place roof = insert(
-				Place.create("roof", "You're on the roof. Looks like you're dog isn't here."             
+				Place.terminal("roof", "You're on the roof."
+						+ "I think the door may have locked behind you..."             
 						));
-		roof.addExit(new Exit("stairway"+laststairPart, "Go back down the stairs."));
 		
+		//the elevator has exits on multiple floors 
 		Place elevator = insert(
 				Place.create("elevator", "You're inside the elevator. Which "
 						+ " floor would you like to go to?"             
@@ -66,28 +75,30 @@ public class DogSearch implements GameWorld {
 		elevator.addExit(new Exit("entranceHall", "Go back to the lobby."));
 		elevator.addExit(new Exit("secondFloor", "Take it to the second floor."));
 		elevator.addExit(new Exit("thirdFloor", "Take it to the third floor."));
-		
+		///this creates the second floor of the hotel and adds exits to it 
 		Place secondFloor = insert(
 				Place.create("secondFloor", "The second floor looks like a construction site."
 						+ " Your dog isn't here"             
 						));
 		secondFloor.addExit(new Exit("elevator", "Go back in the elevator."));
-		
+		///this creates the third floor of the hotel and adds exits to it 
 		Place thirdFloor = insert(
 				Place.create("thirdFloor", "You don't see your dog but you can hear him barking!"
-						+ " I think he may be in one of the hotel rooms!"             
+						+ " I think he may be in one of the hotel rooms! Maybe you should 'search' the "
+						+ " floor"             
 						));
 		thirdFloor.addExit(new Exit("elevator", "Go back in the elevator."));
-		thirdFloor.addExit(new Exit("hotelroom1", "Try to get into the first hotel room."));
-		
+		thirdFloor.addExit(new SecretExit("hotelroom1", "Try to get into the first hotel room."));
+		thirdFloor.addExit(new LockedExit("hotelroom2", "You need a key to open this door", "Staff Key"));
+		///because this is a terminal place the game ends when the player gets here because they have won
 		Place hotelroom1 = insert(Place.terminal("hotelroom1", "You have found your dog!.\n"
 				+"It's time to go home :)"));
-
-
 		
-		///Place crypt = insert(Place.terminal("crypt", "You have found the crypt.\n"
-				///+"It is scary here, but there is an exit to outside.\n"+
-				///"Maybe you'll be safe out there."));
+		Place hotelroom2 = insert(Place.create("hotelroom2", "This room is just filled with "
+				+ "pictures of Elen Degeneres....why is it locked... creepy "));
+		hotelroom2.addExit(new Exit("thirdFloor", "Go back into the hallway."));
+
+
 		
 		// Make sure your graph makes sense!
 		checkAllExitsGoSomewhere();

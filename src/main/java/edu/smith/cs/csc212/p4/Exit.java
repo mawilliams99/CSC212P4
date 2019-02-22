@@ -1,5 +1,6 @@
 package edu.smith.cs.csc212.p4;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -25,6 +26,10 @@ public class Exit {
 	public Exit(String target, String description) {
 		this.description = description;
 		this.target = target;
+	}
+	//puts in the search method
+	public void search() {
+		
 	}
 	
 	/**
@@ -74,6 +79,16 @@ public class Exit {
 			Exit rhs = (Exit) other;
 			return this.target.equals(rhs.target) && this.description.equals(rhs.description); 
 		}
+	
 		return false;
 	}
+	///shows if an item or place is hidden 
+	public boolean isHidden() {
+		return false ;
+	}
+	///allows the user to unlock a place if an item in the list work as a key for the place 
+	public boolean canUnlock(List<String> stuff) {
+		return true;
+	}
+	
 }

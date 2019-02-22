@@ -27,6 +27,8 @@ public class Place {
 	 */
 	private boolean terminal;
 	
+	List<String> items;
+	
 	/**
 	 * Internal only constructor for Place. Use {@link #create(String, String)} or {@link #terminal(String, String)} instead.
 	 * @param id - the internal id of this place.
@@ -37,6 +39,7 @@ public class Place {
 		this.id = id;
 		this.description = description;
 		this.exits = new ArrayList<>();
+		this.items = new ArrayList<>();
 		this.terminal = terminal;
 	}
 	
@@ -46,6 +49,18 @@ public class Place {
 	 */
 	public void addExit(Exit exit) {
 		this.exits.add(exit);
+	}
+	///creates an item for the user to use
+	public void addItem(String item) {
+		this.items.add(item);
+	}
+	///allows the user to take an item and clears the item from the place once it is taken
+	public void takeItems() {
+		this.items.clear();
+	}
+	//adds a taken item to a list of items 
+	public List<String> getItems() {
+		return this.items;
 	}
 	
 	/**
@@ -76,9 +91,26 @@ public class Place {
 	 * Get a view of the exits from this Place, for navigation.
 	 * @return all the exits from this place.
 	 */
+	////public List<Exit> getVisibleExits() {
+		////return Collections.unmodifiableList(exits);
+	///}
 	public List<Exit> getVisibleExits() {
-		return Collections.unmodifiableList(exits);
-	}
+		  List<Exit> output = new ArrayList<>();
+		  for (Exit e : this.exits) {
+		    if (e.isHidden()) {
+		      // don't show to player
+		    } else {
+		      output.add(e);
+		    }
+		  }
+		  return output;
+		}
+	public void search() {
+		  for (Exit e : this.exits) {
+		    // search makes it not secret any more if it's a SecretExit!
+		    e.search();
+		  }
+		}
 	
 	/**
 	 * This is a terminal location (good or bad).

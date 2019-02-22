@@ -1,5 +1,6 @@
 package edu.smith.cs.csc212.p4;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +24,9 @@ public class InteractiveFiction {
 		// This is the current location of the player (initialize as start).
 		// Maybe we'll expand this to a Player object.
 		String place = game.getStart();
+		GameTime time = new GameTime();
+		List<String> stuff = new ArrayList<>();
+		stuff.add("cookie");
 
 		// Play the game until quitting.
 		// This is too hard to express here, so we just use an infinite loop with breaks.
@@ -30,6 +34,8 @@ public class InteractiveFiction {
 			// Print the description of where you are.
 			Place here = game.getPlace(place);
 			System.out.println(here.getDescription());
+			
+			time.printHour();
 
 			// Game over after print!
 			if (here.isTerminalState()) {
@@ -65,6 +71,25 @@ public class InteractiveFiction {
 				}
 			
 			}
+			if(action.contentEquals("search")) {
+				here.search(); 
+				continue;
+			}
+			
+			if (action.equals("stuff")) {
+				System.out.println("You have:");
+				for (String item : stuff) {
+					System.out.println(item);
+				}
+				System.out.println();
+				continue;
+			}
+			
+			if (action.contentEquals("take")) {
+				stuff.addAll(here.getItems());
+				here.takeItems();
+				continue;
+			}
 			
 			// From here on out, what they typed better be a number!
 			Integer exitNum = null;
@@ -82,7 +107,12 @@ public class InteractiveFiction {
 
 			// Move to the room they indicated.
 			Exit destination = exits.get(exitNum);
-			place = destination.getTarget();
+			if (destination.canUnlock(stuff)) {
+				time.increaseHour();
+				place = destination.getTarget();
+			} else {
+				System.out.println("Can't go there, maybe you need a key?");
+			}
 		}
 
 		// You get here by "quit" or by reaching a Terminal Place.
